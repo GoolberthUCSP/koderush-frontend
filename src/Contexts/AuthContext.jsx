@@ -4,16 +4,33 @@ const AuthContext = createContext();
 
 export const AuthProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+    const [userData, setUserData] = createSignal({
+        username: "",
+        name: "",
+        profilePicture: "",
+        location: "",
+        email: "",
+        bio: "",
+    });
 
-    const login = () => {
+    const login = (userData) => {
         setIsLoggedIn(true);
+        setUserData(userData);
     };
     const logout = () => {
         setIsLoggedIn(false);
+        setUserData({
+            username: "",
+            name: "",
+            profilePicture: "",
+            location: "",
+            email: "",
+            bio: "",
+        });
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, userData, setUserData }}>
             {props.children}
         </AuthContext.Provider>
     );

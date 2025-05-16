@@ -1,4 +1,4 @@
-export function LeaderboardPage() {
+function LeaderboardContent() {
   const leaderboardData = [
     { name: 'Player 1', score: 100 },
     { name: 'Player 2', score: 80 },
@@ -8,8 +8,8 @@ export function LeaderboardPage() {
   ];
   
   return (
-    <div>
-      <h1>Leaderboard</h1>
+    <>
+    <h1>Leaderboard</h1>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -28,6 +28,34 @@ export function LeaderboardPage() {
           ))}
         </tbody>
       </table>
+    </>
+  );
+}
+
+function LeaderboardAside() {
+  return (
+    <>
+      <div className="sticky-top">
+        <div className="card mb-4">
+          <div className="card-body">
+            <h5 className="card-title">Leaderboard Info</h5>
+            <p className="card-text">This is the leaderboard info section.</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function LeaderboardPage() {
+  return (
+    <div className="row">
+      <main className="col-md-8 py-3">
+        <LeaderboardContent />
+      </main>
+      <aside className="col-md-4 my-3 border-end hiding">
+        <LeaderboardAside />
+      </aside>
     </div>
   );
 }

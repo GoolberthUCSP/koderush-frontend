@@ -1,9 +1,12 @@
 import { createSignal } from "solid-js";
 
 const inputFields = [
-    { id: 'registerUsername', label: 'Username', type: 'text' },
-    { id: 'email', label: 'Email', type: 'email' },
-    { id: 'registerPassword', label: 'Password', type: 'password'},
+    { id: 'registerUsername', label: 'Username', type: 'text', requiredField: true },
+    { id: 'registerName', label: 'Name', type: 'text', requiredField: true },
+    { id: 'registerPassword', label: 'Password', type: 'password', requiredField: true },
+    { id: 'registerEmail', label: 'Email', type: 'email', requiredField: true },
+    { id: 'registerLocation', label: 'Location', type: 'text', requiredField: true },
+    { id: 'registerBio', label: 'Bio', type: 'textarea', requiredField: false },
 ];
 
 function RegisterModal(props) {
@@ -11,10 +14,10 @@ function RegisterModal(props) {
     const [showPassword, setShowPassword] = createSignal(false);
 
     const handleRegister = () => {
-        const inputs = document.querySelectorAll('#RegisterModal input');
+        const inputs = document.querySelectorAll('#RegisterModal input, #RegisterModal textarea');
         let allFilled = true;
         inputs.forEach(input => {
-            if (!input.value) {
+            if (!input.value && input.required) {
                 allFilled = false;
             }
         });
@@ -30,8 +33,6 @@ function RegisterModal(props) {
             }, 3000);
             return;
         }
-    
-        // Close the modal after register
         onClose();
     }
 
@@ -60,13 +61,15 @@ function RegisterModal(props) {
                         {inputFields.map(field => (
                             <>
                             <div class="mb-3">
-                                <label for={field.id} class="form-label">{field.label}</label>
-                                <input type={field.type} class="form-control" id={field.id} />
+                                <label for={field.id} class="form-label">{field.label} {field.requiredField ? '(*)' : ''}</label>
+                                {field.type === 'textarea' ? 
+                                    (<textarea class="form-control" id={field.id} rows="4" required={field.requiredField}></textarea>) : 
+                                    (<input type={field.type} class="form-control" id={field.id} required={field.requiredField} />)}
                             </div>
                             {field.id === 'registerPassword' ? (<div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="showPassword" onChange={handleShowPassword} />
-                            <label class="form-check-label" for="showPassword">Show Password</label>
-                        </div>) : null}
+                                    <input type="checkbox" class="form-check-input" id="showPassword" onChange={handleShowPassword} />
+                                    <label class="form-check-label" for="showPassword">Show Password</label>
+                                </div>) : null}
                             </>
                         ))}
                         <div class="alert alert-warning" role="alert" id="registerError" style={{ display: 'none' }}>

@@ -2,7 +2,7 @@ import { useAuthContext } from "../Contexts/AuthContext";
 import { createSignal } from "solid-js";
 
 function LoginModal(props) {
-    const { isLoggedIn, login } = useAuthContext();
+    const { login } = useAuthContext();
     const { show, onClose } = props;
     const [showPassword, setShowPassword] = createSignal(false);
 
@@ -21,9 +21,17 @@ function LoginModal(props) {
             }, 3000);
             return;
         }
-        // Perform login logic here: TODO
+        // Perform login logic here: Get user data from API and call login function
         console.log('Logging in with:', { username, password });
-        login();
+        const userData = {
+            username: "kingpig_official", // No editable
+            name: "Rey Cerdito",
+            profilePicture: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ9HmGyLuw5L-fd0uZVq9C2mPI4V7GKyd6E2DIVz6-xaHHVUtmmBiCOo1OytaYR21Tdpc&usqp=CAU",
+            location: "Isla Cerdito",
+            email: "king.pig@piggyisland.com",
+            bio: "¡Mwahahaha! Soy el magnífico Rey Cerdito de Isla Cerdito. Mi vida consiste en dar órdenes a mis súbditos, idear planes (a veces fallidos) para robar los huevos de esos plumíferos enfadados y, por supuesto, ¡disfrutar de una buena siesta real!",
+        };
+        login(userData);
         // Close the modal after login
         onClose();
     }
