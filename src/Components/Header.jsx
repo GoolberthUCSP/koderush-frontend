@@ -3,6 +3,7 @@ import { usePageContext } from "../Contexts/PageContext";
 import { createSignal } from "solid-js";
 import  LoginModal  from "./LoginModal";
 import RegisterModal  from "./RegisterModal";
+import koderushIcon from "../assets/koderush-icon.ico";
 
 function Header(props) {
   const { handleSelectPage } = usePageContext();
@@ -31,10 +32,18 @@ function Header(props) {
 
   return (
     <header className="py-3 d-flex align-items-center justify-content-between container-fluid">
-      <h2 className="text-primary">Koderush</h2>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Type contest ID" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">
+      <div className="col d-flex">
+        <img
+            src={koderushIcon}
+            alt="Koderush Icon"
+            className="me-2"
+            style={{ height: '3em' }}
+        />
+        <h2 className="text-primary mb-0">Koderush</h2>
+      </div>
+      <form className="d-flex me-5" role="search">
+        <input className="form-control me-2" type="search" placeholder="Type contest ID" aria-label="Search"/>
+        <button className="btn btn-outline-success" type="submit">
           Join
         </button>
       </form>

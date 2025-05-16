@@ -74,7 +74,7 @@ function RegisterModal(props) {
                         ))}
                         <div class="alert alert-warning" role="alert" id="registerError" style={{ display: 'none' }}>
                             <i class="bi bi-exclamation-triangle-fill p-2"></i>
-                            Please, fill in all fields!
+                            Please, fill in all required (*) fields!
                         </div>
                     </div>
                     <div class="modal-footer">

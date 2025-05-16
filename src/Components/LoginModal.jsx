@@ -67,7 +67,7 @@ function LoginModal(props) {
                             <input type="password" class="form-control" id="password" />
                         </div>
                         <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="showPassword" onChange={handleShowPassword} />
+                            <input type="checkbox" class="form-check-input" id="registerShowPassword" onChange={handleShowPassword} />
                             <label class="form-check-label" for="showPassword">Show Password</label>
                         </div>
                         <div class="alert alert-warning" role="alert" id="loginError" style={{ display: 'none' }}>
