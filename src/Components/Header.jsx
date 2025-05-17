@@ -3,7 +3,7 @@ import { usePageContext } from "../Contexts/PageContext";
 import { createSignal } from "solid-js";
 import  LoginModal  from "./LoginModal";
 import RegisterModal  from "./RegisterModal";
-import koderushIcon from "../assets/koderush-icon.ico";
+import koderushIcon from "../assets/favicon.ico";
 
 function Header(props) {
   const { handleSelectPage } = usePageContext();
@@ -41,12 +41,11 @@ function Header(props) {
         />
         <h2 className="text-primary mb-0">Koderush</h2>
       </div>
-      <form className="d-flex me-5" role="search">
-        <input className="form-control me-2" type="search" placeholder="Type contest ID" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">
-          Join
-        </button>
-      </form>
+      <div className="col d-flex m-auto">
+        <a className="ms-3">About Us</a>
+        <a className="ms-3">Contact</a>
+        <a className="ms-3">Help</a>
+      </div>
       <div>
         {isLoggedIn() ? (
           <button className="btn btn-outline-primary" onClick={handleLogout}>
