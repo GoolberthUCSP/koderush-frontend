@@ -1,16 +1,16 @@
-import Header from './Components/Header';
-import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
-import Content from './Components/Content';
+import Home from './Components/HomePage';
+import WaitingRoom from './Components/WaitingHub';
+import Game from './Components/Game';
+import { Router, Route } from '@solidjs/router';
+
 
 function App(){
   return (
-    <div className="container-fluid">
-      <Header/>
-      <Navbar/>
-      <Content/>
-      <Footer/>
-    </div>
+    <Router>
+      <Route path="/" component={Home} />
+      <Route path="/waiting" component={WaitingRoom} />
+      <Route path="/game" component={Game} />
+    </Router>
   );
 }
 
