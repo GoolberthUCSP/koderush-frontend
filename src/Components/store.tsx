@@ -1,15 +1,15 @@
 // store.ts
 import { createStore } from 'solid-js/store';
-import { mockServerMatch, transformMatch } from './mockdata';
+import { mockServerMatch } from './mockdata';
 
 export type AppState = {
-  currentMatch: UserMatch | null;
+  currentMatch: ServerMatch | null;
   user: string | null;
   error: string | null;
 };
 
 export const [store, setStore] = createStore<AppState>({
-  currentMatch: transformMatch(mockServerMatch, 'TestUser'),
+  currentMatch: mockServerMatch,
   user: "TestUser",
   error: null
 });

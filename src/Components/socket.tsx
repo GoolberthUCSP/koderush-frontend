@@ -1,6 +1,6 @@
 // socket.ts
 import { setStore } from "./store";
-import { mockServerMatch, transformMatch } from "./mockdata";
+import { mockServerMatch } from "./mockdata";
 
 let socket: WebSocket | null = null;
 let mockInterval: number; // For testing
@@ -16,7 +16,7 @@ export function connectToMatch(username: string, code: string) {
     };
     
     // Transform to UserMatch and update store
-    setStore('currentMatch', transformMatch(match, username));
+    setStore('currentMatch', match);
     
     // Simulate other players joining
     mockInterval = window.setInterval(() => {
@@ -33,7 +33,7 @@ export function connectToMatch(username: string, code: string) {
         ...mockServerMatch,
         start_timestamp: Date.now()
       };
-      setStore('currentMatch', transformMatch(startedMatch, username));
+      setStore('currentMatch', startedMatch);
     }, 10000);
   }, 500);
 }
