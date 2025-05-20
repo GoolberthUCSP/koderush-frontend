@@ -7,7 +7,7 @@ import ProblemTabs from './ProblemTabs';
 import ProblemContent from './Problem';
 import CodeEditor from './CodeEditor';
 import SubmissionsList from './Submissions';
-import Tutorial from './tutorial';
+import Tutorial from './Tutorial';
 
 const getMatchStorageKey = (matchId: string) => `match_${matchId}_start_time`;
 const clearMatchStorage = (matchId: string) => localStorage.removeItem(getMatchStorageKey(matchId));
