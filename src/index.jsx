@@ -3,6 +3,7 @@ import { render } from 'solid-js/web';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { WebSocketProvider } from './Contexts/WebSocketContext';
 import App from './App';
 
 const root = document.getElementById('root');
@@ -14,5 +15,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 render(() => (
+  <WebSocketProvider>
       <App />
+  </WebSocketProvider>
 ), root);
