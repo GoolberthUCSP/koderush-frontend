@@ -24,7 +24,7 @@ export function WebSocketProvider(props: { children: any }) {
           }
           setIsConnected(false);
           
-          socket = new WebSocket(`ws://${ip}:${port}`);
+          socket = new WebSocket(`http://${ip}:${port}`, 'http');
           let connTimeout: ReturnType<typeof setTimeout> | null = null;
           connTimeout = setTimeout(() => {
                if (socket && socket.readyState === WebSocket.CONNECTING) {

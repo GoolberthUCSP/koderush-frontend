@@ -4,7 +4,7 @@ import { store } from './store';
 import { onCleanup, onMount } from 'solid-js';
 import Header from './Header';
 
-export default function WaitingHub({ nickname, matchId }) {
+export default function WaitingHub({ match }) {
     const navigate = useNavigate();
     const startGame = () => navigate('/game'); //Should be triggerd by the websocket message
 

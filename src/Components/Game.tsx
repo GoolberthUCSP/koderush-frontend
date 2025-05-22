@@ -12,7 +12,7 @@ import Tutorial from './Tutorial';
 const getMatchStorageKey = (matchId: string) => `match_${matchId}_start_time`;
 const clearMatchStorage = (matchId: string) => localStorage.removeItem(getMatchStorageKey(matchId));
 
-export default function Game() {
+export default function Game({ match }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = createSignal('problem');
   const [problemIndex, setProblemIndex] = createSignal(0);

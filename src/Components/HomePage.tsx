@@ -4,11 +4,13 @@ import { createSignal } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
 import { connectToMatch } from './socket';
 import { setStore } from "./store"; // For testing
+import { useWebSocket } from "../Contexts/WebSocketContext";
 
 function MainContent() {
     const navigate = useNavigate();
     const [name, setName] = createSignal('');
     const [code, setCode] = createSignal('');
+    const { connect } = useWebSocket();
 
     const handleJoin = (e: Event) => {
         e.preventDefault();
@@ -31,7 +33,7 @@ function MainContent() {
                 <form class="d-flex w-50 m-auto" role="search" onSubmit={handleJoin}>
                     <input class="form-control me-2"  type="text" placeholder="Nickname" value={name()} onInput={(e) => setName(e.currentTarget.value)} required/>
                     <input class="form-control me-2" type="text" placeholder="Match ID" value={code()} onInput={(e) => setCode(e.currentTarget.value)} required/>
-                    <button class="btn btn-outline-success" type="submit">
+                    <button class="btn btn-outline-success" type="submit" onClick={() => connect("localhost", "5000")}>
                     Join
                     </button>
                 </form>

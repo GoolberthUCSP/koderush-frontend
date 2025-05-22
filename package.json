@@ -20,6 +20,7 @@
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.13.1",
     "codemirror": "^5.65.19",
+    "socket.io-client": "^4.8.1",
     "solid-js": "^1.9.5"
   }
 }
