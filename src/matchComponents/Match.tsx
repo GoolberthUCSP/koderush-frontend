@@ -5,52 +5,16 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Game from "./Game";
 import WaitingHub from "./WaitingHub";
-
-type Submission = {
-    player: string,
-    problem_id: number,
-    timestamp: number,
-    veredict: 'waiting' | 'accepted' | 'wrong answer' | 'time limit exceeded' | 'memory limit exceeded' | 'compilation error' | 'runtime error' | 'internal error',
-    index: number | null | undefined
-}
-
-type ProblemExample = {
-    input: string,
-    output: string,
-    explanation: string,
-}
-
-type Problem = {
-    problem_id: string,
-    title: string,
-    memory_limit: number, // en megabytes
-    time_limit: number, // en segundos
-    statement: string,
-    input_description: string,
-    output_description: string,
-    examples: ProblemExample[],
-    tutorial: string | null,
-}
-
-type MatchState = {
-    match_id: string,
-    player: string,
-    start_timestamp: number | null,
-    players: string[],
-    submissions: Submission[],
-    problems: { [problem_id: string]: Problem }, // Map<string, Problem>
-    seconds_per_problem: number | null,
-    seconds_per_tutorial: number | null,
-}
-
-type MatchProps = {
-    match_id: string,
-    player: string
-}
+import { useNavigate, useSearchParams } from "@solidjs/router";
 
 let socket: Socket
 
-export default function Match({match_id, player}: MatchProps) {
+export default function Match() {
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
+    const player = params.name as string;
+    const match_id = params.code as string;
+
     const [match, setMatch] = createStore<MatchState>({
         match_id: match_id,
         player: player,
@@ -61,15 +25,21 @@ export default function Match({match_id, player}: MatchProps) {
         seconds_per_problem: null,
         seconds_per_tutorial: null,
     })
+
     onMount(() => {
-        socket = io();
+        socket = io("http://127.0.0.1:5000");
         console.log('Socket connected');
         socket.emit('join_match', {
-            match: match.match_id,
+            match_id: match.match_id,
             player: match.player,
         })
         socket.on('rejected', () => {
             console.log('Rejected from match');
+            navigate('/')
+        })
+        socket.on('start_timestamp', (timestamp) => {
+            setMatch('start_timestamp', () => timestamp)
+            console.log("Start timestamp", timestamp)
         })
         socket.on('new_player', (player) => {
             setMatch('players', (players) => [...players, player])
@@ -105,11 +75,30 @@ export default function Match({match_id, player}: MatchProps) {
         console.log('Socket disconnected');
     })
 
+    const submitCode = (problemId: string, language: string, code: string) => {
+        const index: number = match.submissions.length
+        const submission: Submission = {
+            player: match.player,
+            problem_id: problemId,
+            timestamp: Math.floor(Date.now() / 1000),
+            veredict: 'waiting',
+            index: index
+        }
+        setMatch('submissions', (submissions) => [...submissions, submission])
+        socket.emit('upload_solution', {
+            problem_id: problemId,
+            language: language,
+            solution: code,
+            index: index
+        })
+    }
+
     const matchUI = () => {
-        if (!match.start_timestamp || Date.now() < match.start_timestamp) {
+        console.log(Math.floor(Date.now() / 1000), match.start_timestamp)
+        if (!match.start_timestamp || Math.floor(Date.now() / 1000) < match.start_timestamp) {
             return <WaitingHub match={match} />
         } else {
-            return <Game match={match}/>
+            return <Game match={match} submitCode={submitCode}/>
         }
     }
 

@@ -1,6 +1,6 @@
 // ProblemTabs.tsx
 export default function ProblemTabs(props: {
-  problems: ServerProblem[],
+  problems: Problem[],
   currentIndex: number,
   onTabChange: (index: number) => void,
   allowNavigation: boolean
