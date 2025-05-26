@@ -2,14 +2,14 @@ import { createSignal } from 'solid-js'
 
 export default function CodeEditor({ submitCode, problemId }: {
     submitCode: CallableFunction
-    problemId: string,
+    problemId: () => string,
 }) {
   const [code, setCode] = createSignal('')
   const [language, setLanguage] = createSignal('cpp')
 
   const handleSubmit = () => {
     if (code().trim() !== '') {
-      submitCode(problemId, language(), code())
+      submitCode(problemId(), language(), code())
     }
   }
 
@@ -31,7 +31,7 @@ export default function CodeEditor({ submitCode, problemId }: {
       <textarea
         id="codeEditor"
         class="form-control"
-        rows="20"
+        rows="15"
         value={code()}
         onInput={(e) => setCode(e.target.value)}
         placeholder="Escribe o pega tu código aquí..."

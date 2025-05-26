@@ -26,15 +26,15 @@ export default function Game({ match, submitCode }: {
 
       <div class="tab-content mt-3">
         {activeTab() === 'problemas' && (
-          <ProblemsTab problems={match.problems} submitCode={submitCode} />
+          <ProblemsTab match={match} submitCode={submitCode} />
         )}
 
         {activeTab() === 'tabla' && (
-          <ScoreboardTab submissions={match.submissions} players={match.players} problems={match.problems}/>
+          <ScoreboardTab match={match} />
         )}
 
         {activeTab() === 'envios' && (
-          <SubmissionsTab submissions={match.submissions} player={match.player} />
+          <SubmissionsTab match={match} />
         )}
       </div>
     </div>

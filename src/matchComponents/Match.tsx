@@ -94,7 +94,6 @@ export default function Match() {
     }
 
     const matchUI = () => {
-        console.log(Math.floor(Date.now() / 1000), match.start_timestamp)
         if (!match.start_timestamp || Math.floor(Date.now() / 1000) < match.start_timestamp) {
             return <WaitingHub match={match} />
         } else {
@@ -106,7 +105,6 @@ export default function Match() {
         <>
         <Header />
         { matchUI() }
-        <Footer />
         </>
     )
 }

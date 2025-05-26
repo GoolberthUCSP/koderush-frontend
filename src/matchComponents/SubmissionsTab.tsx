@@ -1,19 +1,18 @@
 // SubmissionTab.jsx
 import { For } from 'solid-js'
 
-export default function SubmissionsTab({ submissions, player }: {
-    submissions: Submission[],
-    player: string
-}) {
+export default function SubmissionsTab({ match }: { match: MatchState }) {
   const ownSubmissions = () =>
-    [...submissions]
-      .filter((s) => s.player === player)
+    [...match.submissions]
+      .filter((s) => s.player === match.player)
       .sort((a, b) => b.timestamp - a.timestamp)
 
   const formatTime = (timestamp: number) => {
-    const date = new Date(timestamp)
+    const date = new Date(timestamp * 1000)
     return date.toLocaleTimeString()
   }
+
+  const problemIds = Object.keys(match.problems)
 
   return (
     <div class="table-responsive">
@@ -31,7 +30,7 @@ export default function SubmissionsTab({ submissions, player }: {
             {(s, i) => (
               <tr>
                 <td>{i() + 1}</td>
-                <td>{String.fromCharCode(65 + i())}</td>
+                <td>{String.fromCharCode(65 + problemIds.indexOf(s.problem_id))}</td>
                 <td>{formatTime(s.timestamp)}</td>
                 <td>
                   <span class={`badge text-bg-${veredictColor(s.veredict)}`}>

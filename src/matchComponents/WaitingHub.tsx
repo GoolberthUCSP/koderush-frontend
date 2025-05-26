@@ -1,6 +1,6 @@
 import { Show } from 'solid-js'
 
-export default function WaitingHub({ match }: MatchStateProp) {
+export default function WaitingHub({ match }: { match: MatchState }) {
   return (
     <div class="container py-2">
       <div class="row justify-content-center">
