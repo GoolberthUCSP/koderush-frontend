@@ -11,7 +11,7 @@ export default function Game({ match, submitCode }: {
   const [activeTab, setActiveTab] = createSignal('problemas')
 
   return (
-    <div class="container mt-3 row">
+    <div class="game-container mt-3 row p-3">
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <button class={`nav-link  ${activeTab() === 'problemas' ? 'active' : ''}`} onClick={() => setActiveTab('problemas')}>Problemas</button>
