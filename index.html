@@ -6,6 +6,106 @@
     <meta name="theme-color" content="#000000" />
     <link rel="shortcut icon" type="image/ico" href="/src/assets/koderush-icon.ico" />
     <title>Koderush</title>
+    <style>
+      body {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab ); /* Kahoot-style gradient */
+        font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif;
+        background-size: 400% 400%;
+        color: #fff;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: gradient 10s ease infinite;
+      }
+
+      @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+      }
+
+      .kahoot-container {
+          text-align: center;
+          padding: 2rem;
+      }
+
+      .kahoot-title {
+          font-size: 3rem;
+          color: white;
+      }
+
+      .text-brand {
+          color: #ffeb3b; /* Kahoot-style yellow */
+      }
+
+      .kahoot-form {
+          max-width: 600px;
+          margin: auto;
+      }
+
+      .form-input {
+          border: none;
+          border-radius: 10px;
+          padding: 0.75rem 1rem;
+          font-size: 1.1rem;
+      }
+
+      .btn-join {
+          background-color: #00C853;
+          border: none;
+          padding: 0.75rem 1.5rem;
+          border-radius: 10px;
+          color: white;
+          font-size: 1.1rem;
+          font-weight: bold;
+          transition: background-color 0.3s;
+      }
+
+      .btn-join:hover {
+          background-color: #00b144;
+      }
+
+      .waiting-title {
+        color: #FFEB3B; /* Kahoot yellow */
+      }
+
+      .custom-spinner {
+        width: 4rem;
+        height: 4rem;
+        border-width: 0.4em;
+      }
+
+      .player-list {
+        background-color: transparent;
+      }
+
+      .player-item {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: none;
+        border-radius: 0.5rem, 0.5rem, 0.5rem, 0.5rem;
+        margin-top: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+      }
+
+      .player-item i {
+        color: #FFEB3B;
+      }
+
+      .text-warning {
+        color: #FFC107 !important;
+        font-size: 1.2rem;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -11,10 +11,10 @@ export default function Game({ match, submitCode }: {
   const [activeTab, setActiveTab] = createSignal('problemas')
 
   return (
-    <div class="container mt-3">
+    <div class="container mt-3 row">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <button class={`nav-link ${activeTab() === 'problemas' ? 'active' : ''}`} onClick={() => setActiveTab('problemas')}>Problemas</button>
+          <button class={`nav-link  ${activeTab() === 'problemas' ? 'active' : ''}`} onClick={() => setActiveTab('problemas')}>Problemas</button>
         </li>
         <li class="nav-item">
           <button class={`nav-link ${activeTab() === 'tabla' ? 'active' : ''}`} onClick={() => setActiveTab('tabla')}>Tabla de posiciones</button>
@@ -37,6 +37,6 @@ export default function Game({ match, submitCode }: {
           <SubmissionsTab match={match} />
         )}
       </div>
-    </div>
+      </div>
   )
 }

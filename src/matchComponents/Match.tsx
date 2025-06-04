@@ -1,4 +1,4 @@
-import { onCleanup, onMount } from "solid-js";
+import { onCleanup, onMount, createSignal, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
 import { io, Socket } from 'socket.io-client'
 import Header from "./Header";
@@ -14,6 +14,8 @@ export default function Match() {
     const [params] = useSearchParams();
     const player = params.name as string;
     const match_id = params.code as string;
+    const [now, setNow] = createSignal(Math.floor(Date.now() / 1000));
+    let clockInterval: ReturnType<typeof setInterval> | null = null;
 
     const [match, setMatch] = createStore<MatchState>({
         match_id: match_id,
@@ -29,6 +31,10 @@ export default function Match() {
     onMount(() => {
         socket = io("http://127.0.0.1:5000");
         console.log('Socket connected');
+        clockInterval = setInterval(() => {
+            console.log('time left', match.start_timestamp, now());
+            setNow(Math.floor(Date.now() / 1000));
+        }, 1000);
         socket.emit('join_match', {
             match_id: match.match_id,
             player: match.player,
@@ -70,7 +76,18 @@ export default function Match() {
         })
     })
 
+    createEffect(() => {
+        if (match.start_timestamp && now() >= match.start_timestamp) {
+            if (clockInterval) {
+            clearInterval(clockInterval);
+            clockInterval = null;
+            console.log("Clock interval stopped");
+            }
+        }
+    });
+
     onCleanup(() => {
+        if (clockInterval) clearInterval(clockInterval);
         socket.disconnect();
         console.log('Socket disconnected');
     })
@@ -94,16 +111,17 @@ export default function Match() {
     }
 
     const matchUI = () => {
-        if (!match.start_timestamp || Math.floor(Date.now() / 1000) < match.start_timestamp) {
+        // !match.start_timestamp || now() < match.start_timestamp
+        if (false) {
             return <WaitingHub match={match} />
         } else {
             return <Game match={match} submitCode={submitCode}/>
         }
     }
 
+
     return (
         <>
-        <Header />
         { matchUI() }
         </>
     )

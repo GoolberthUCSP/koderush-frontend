@@ -13,23 +13,17 @@ function MainContent() {
         navigate(`/match?name=${encodeURIComponent(name())}&code=${encodeURIComponent(code())}`);
     };
     return (
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h1 class="display-4 fw-bold mb-4">
-                    ¡Bienvenido a <span class="text-primary">Koderush</span>!
+        <div class="kahoot-container justify-content-center my-auto row">
+            <div class="col-lg-8 text-center d-flex flex-column align-items-center">
+                <h1 class="kahoot-title display-2 fw-bold mb-4">
+                    <span class="text-brand">Koderush</span>!
                 </h1>
-                <p class="lead mb-4">
-                    ¿Listo para llevar tus habilidades de programación al siguiente nivel de la manera más divertida y desafiante? En Koderush, combinamos la emoción de los juegos tipo <span class="text-success">Kahoot!</span> con los desafíos de programación competitiva al estilo <span class="text-info">Codeforces</span>.
-                </p>
-                <p class="lead mb-4">
-                    Aprende conceptos clave, practica algoritmos y compite con otros entusiastas de la programación en tiempo real. ¡Koderush es tu campo de entrenamiento interactivo para convertirte en un maestro del código!
-                </p>
-                <form class="d-flex w-50 m-auto" role="search" onSubmit={handleJoin}>
-                    <input class="form-control me-2"  type="text" placeholder="Nickname" value={name()} onInput={(e) => setName(e.currentTarget.value)} required/>
-                    <input class="form-control me-2" type="text" placeholder="Match ID" value={code()} onInput={(e) => setCode(e.currentTarget.value)} required/>
-                    <button class="btn btn-outline-success" type="submit">
-                    Join
-                    </button>
+                <form class="kahoot-form d-flex flex-column flex-md-col w-100 gap-3" role="search" onSubmit={handleJoin}>
+                    <input class="form-control form-input mb-3 mb-md-0 me-md-2" type="text" placeholder="Nickname" value={name()} onInput={(e) => setName(e.currentTarget.value)} required />
+
+                    <input class="form-control form-input mb-3 mb-md-0 me-md-2" type="text" placeholder="Match ID" value={code()} onInput={(e) => setCode(e.currentTarget.value)} required />
+
+                    <button class="btn-join" type="submit">Join</button>
                 </form>
             </div>
         </div>
@@ -39,12 +33,9 @@ function MainContent() {
 export default function HomePage() {
     return (
         <div class="row px-5">
-            <Header/>
-            <hr/>
             <main class="col-md-12 py-3">
                 <MainContent />               
             </main>
-            <Footer/>
         </div>
   );
 }
