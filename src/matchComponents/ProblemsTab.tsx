@@ -15,13 +15,13 @@ export default function ProblemsTab({ match, submitCode }: {
   return (
     <div class="row">
       <div class="col-2">
-        <div class="nav flex-column nav-pills">
+        <div class="nav flex-column mynav-pills">
         <For each={problemIds}>
             {(id, index) => {
               const problem = match.problems[id]
               return (
                 <button
-                  class={`nav-link ${activeProblem() === id ? 'active' : ''}`}
+                  class={`mynav-link ${activeProblem() === id ? 'active' : ''}`}
                   onClick={(e) => {
                     setActiveProblem(id)
                     console.log(id)

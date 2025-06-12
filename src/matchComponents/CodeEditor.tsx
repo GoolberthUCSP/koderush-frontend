@@ -31,13 +31,14 @@ export default function CodeEditor({ submitCode, problemId }: {
       <textarea
         id="codeEditor"
         class="form-control"
-        rows="15"
+        rows="10"
         value={code()}
+        
         onInput={(e) => setCode(e.target.value)}
         placeholder="Escribe o pega tu código aquí..."
       ></textarea>
 
-      <button class="btn btn-primary mt-2" onClick={handleSubmit}>
+      <button class="btn-normal mt-2" onClick={handleSubmit}>
         Enviar
       </button>
     </div>

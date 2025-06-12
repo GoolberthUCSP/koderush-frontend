@@ -112,7 +112,7 @@ export default function Match() {
 
     const matchUI = () => {
         // !match.start_timestamp || now() < match.start_timestamp
-        if (false) {
+        if (!match.start_timestamp || now() < match.start_timestamp) {
             return <WaitingHub match={match} />
         } else {
             return <Game match={match} submitCode={submitCode}/>

@@ -1,3 +1,4 @@
+// ScoreboardTab.tsx
 import { For } from 'solid-js'
 
 export default function ScoreboardTab({ match }: { match: MatchState }) {

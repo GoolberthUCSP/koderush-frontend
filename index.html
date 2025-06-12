@@ -8,7 +8,7 @@
     <title>Koderush</title>
     <style>
       body {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab ); /* Kahoot-style gradient */
+        background: linear-gradient(-45deg, #7C4DFF, #2196F3, #00BCD4, #00E676);
         font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif;
         background-size: 400% 400%;
         color: #fff;
@@ -21,60 +21,92 @@
       }
 
       @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
 
       .kahoot-container {
-          text-align: center;
-          padding: 2rem;
+        text-align: center;
+        padding: 2rem;
       }
 
       .kahoot-title {
-          font-size: 3rem;
-          color: white;
+        font-size: 3rem;
+        color: white;
       }
 
       .text-brand {
-          color: #ffeb3b; /* Kahoot-style yellow */
+        color: #FFEB3B;
       }
 
       .kahoot-form {
-          max-width: 600px;
-          margin: auto;
+        max-width: 600px;
+        margin: auto;
       }
 
       .form-input {
-          border: none;
-          border-radius: 10px;
-          padding: 0.75rem 1rem;
-          font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+        background-color: white;
+        color: #212121;
       }
 
       .btn-join {
-          background-color: #00C853;
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 10px;
-          color: white;
-          font-size: 1.1rem;
-          font-weight: bold;
-          transition: background-color 0.3s;
+        background-color: #FF4081;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .btn-normal {
+        background-color: #FF4081;
+        border: none;
+        padding: 0.5rem 1.0rem;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+      }
+
+      .btn-normal:hover {
+        background-color: rgb(230, 54, 113);
+      }
+
+      .btn-tutorial {
+        background-color: white;
+        border: none;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        color: #FF4081;
+        outline-color: #FF4081;
+        outline: solid;
+        font-size: 1.1rem;
+        transition: background-color 0.3s;
+      }
+
+      .btn-tutorial:hover{
+        color: white;
+        background-color: #FF4081;
+      }
+
+      .btn-tutorial:focus-visible, .btn-tutorial:active {
+        outline: 2px solid #FF4081;
+        outline-offset: 2px;
       }
 
       .btn-join:hover {
-          background-color: #00b144;
+        background-color: #e73370;
       }
 
       .waiting-title {
-        color: #FFEB3B; /* Kahoot yellow */
+        color: #FFEB3B;
       }
 
       .custom-spinner {
@@ -91,7 +123,7 @@
         background-color: rgba(255, 255, 255, 0.1);
         color: #fff;
         border: none;
-        border-radius: 0.5rem, 0.5rem, 0.5rem, 0.5rem;
+        border-radius: 0.5rem;
         margin-top: 0.75rem;
         padding: 0.75rem 1rem;
         font-size: 1.1rem;
@@ -105,12 +137,66 @@
         color: #FFC107 !important;
         font-size: 1.2rem;
       }
+
       .game-container {
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 1rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #212121;
+        border-radius: 0.5rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         padding: 2rem;
-        max-width: 800px;
-        box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.3);
+        max-width: 900px;
+        margin: 2rem auto;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .mynav-pills .mynav-link {
+        background-color: white;
+        color: #7A59EE; /* Lavender purple */
+        border: 2px solid transparent;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        outline: none;
+      }
+
+      .mynav-pills .mynav-link:hover {
+        background-color: #f2e7fe; /* Light lilac on hover */
+        color: #4A148C; /* Darker purple */
+      }
+
+      .mynav-pills .mynav-link:focus-visible {
+        outline: 3px solid #FF4081; /* Bright pink focus ring */
+        outline-offset: 2px;
+      }
+
+      .mynav-pills .mynav-link.active {
+        background-color: #7A59EE; /* Active purple */
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 0 0 0.2rem rgba(122, 89, 238, 0.25); /* Subtle glow */
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 4px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #7C4DFF;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #5E35B1;
       }
     </style>
   </head>

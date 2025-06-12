@@ -1,42 +1,44 @@
-// Game.tsx (main component)
-import { createSignal } from 'solid-js'
 import ProblemsTab from './ProblemsTab'
 import ScoreboardTab from './ScoreboardTab'
 import SubmissionsTab from './SubmissionsTab'
 
 export default function Game({ match, submitCode }: {
-    match: MatchState,
-    submitCode: CallableFunction
+  match: MatchState,
+  submitCode: CallableFunction
 }) {
-  const [activeTab, setActiveTab] = createSignal('problemas')
-
   return (
-    <div class="game-container mt-3 row p-3">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <button class={`nav-link  ${activeTab() === 'problemas' ? 'active' : ''}`} onClick={() => setActiveTab('problemas')}>Problemas</button>
-        </li>
-        <li class="nav-item">
-          <button class={`nav-link ${activeTab() === 'tabla' ? 'active' : ''}`} onClick={() => setActiveTab('tabla')}>Tabla de posiciones</button>
-        </li>
-        <li class="nav-item">
-          <button class={`nav-link ${activeTab() === 'envios' ? 'active' : ''}`} onClick={() => setActiveTab('envios')}>Envíos</button>
-        </li>
-      </ul>
+    <div class="game-container container my-4">
+      <div class="row gy-4">
 
-      <div class="tab-content mt-3">
-        {activeTab() === 'problemas' && (
-          <ProblemsTab match={match} submitCode={submitCode} />
-        )}
+        {/* Full-width ProblemsTab */}
+        <div class="col-12">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Problemas</h5>
+              <ProblemsTab match={match} submitCode={submitCode} />
+            </div>
+          </div>
+        </div>
 
-        {activeTab() === 'tabla' && (
-          <ScoreboardTab match={match} />
-        )}
+        {/* Scoreboard and Submissions side-by-side on md+, stacked on sm */}
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Tabla de posiciones</h5>
+              <ScoreboardTab match={match} />
+            </div>
+          </div>
+        </div>
 
-        {activeTab() === 'envios' && (
-          <SubmissionsTab match={match} />
-        )}
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Envíos</h5>
+              <SubmissionsTab match={match} />
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
+    </div>
   )
 }

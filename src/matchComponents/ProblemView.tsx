@@ -22,7 +22,7 @@ export default function ProblemView({ problem }: { problem : () => Problem | nul
       <Show when={problem()!.tutorial}>
         <div class="mb-3">
           <button
-            class="btn btn-outline-primary btn-sm mb-2"
+            class="btn-tutorial mb-2"
             onClick={() => setShowTutorial(!showTutorial())}
           >
             {showTutorial() ? 'Ocultar tutorial' : 'Mostrar tutorial'}

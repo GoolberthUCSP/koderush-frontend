@@ -25,12 +25,6 @@ export default function WaitingHub({ match }: { match: MatchState }) {
                     <i class="bi bi-person-fill me-2"></i>{player}
                   </li>
                 ))}
-                <li class="list-group-item player-item">
-                    <i class="bi bi-person-fill me-2"></i>User 1
-                </li>
-                <li class="list-group-item player-item">
-                    <i class="bi bi-person-fill me-2"></i>User 2
-                </li>
               </ul>
               <p class="mt-3 text-warning fw-semibold">La partida comenzará en breve...</p>
             </div>
