@@ -55,7 +55,7 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
         // You could add more customizations here
       },
       'wrong answer': {
-        message: 'Respuesta incorrecta. ¡Sigue intentando!',
+        message: 'No te rindas. ¡Sigue intentando!',
         type: 'danger' as const,
       },
       // ... other verdicts
@@ -69,7 +69,7 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
     setShowToast(true);
     
     // Auto-hide after 5 seconds
-    //setTimeout(() => setShowToast(false), 5000);
+    setTimeout(() => setShowToast(false), 5000);
   };
 
   const problemIds = Object.keys(match.problems)
@@ -84,7 +84,7 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
         />
       </Show>
       <div class="table-responsive">
-      <table class="table table-bordered table-sm table-hover align-middle">
+      <table class="table custom-submissions align-middle">
         <thead class="table-light">
           <tr>
             <th>#</th>

@@ -14,7 +14,7 @@ export default function Game({ match, submitCode }: {
         <div class="col-12">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">Problemas</h5>
+              <h3 class="card-title">Problemas</h3>
               <ProblemsTab match={match} submitCode={submitCode} />
             </div>
           </div>
@@ -24,7 +24,7 @@ export default function Game({ match, submitCode }: {
         <div class="col-12 col-md-6">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">Tabla de posiciones</h5>
+              <h3 class="card-title text-center">Tabla de posiciones</h3>
               <ScoreboardTab match={match} />
             </div>
           </div>
@@ -33,7 +33,7 @@ export default function Game({ match, submitCode }: {
         <div class="col-12 col-md-6">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">Envíos</h5>
+              <h3 class="card-title text-center">Envíos</h3>
               <SubmissionsTab match={match} />
             </div>
           </div>

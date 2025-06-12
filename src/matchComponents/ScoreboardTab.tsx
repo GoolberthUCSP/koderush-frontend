@@ -67,7 +67,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
 
   return (
     <div class="table-responsive">
-      <table class="table table-bordered table-sm table-hover align-middle text-center">
+      <table class="table custom-scoreboard text-center align-middle">
         <thead class="table-light">
           <tr>
             <th>#</th>

@@ -17,16 +17,18 @@ export default function WaitingHub({ match }: { match: MatchState }) {
           </div>
 
           <Show when={match} fallback={<div class="text-light">Cargando jugadores...</div>}>
-            <div class="mb-4 w-50 mx-auto">
-              <h4 class="fw-semibold mb-3 text-light">Participantes</h4>
-              <ul class="list-group list-group-flush player-list">
-                {match?.players.map(player => (
-                  <li class="list-group-item player-item">
+            <div class="kahoot-container">
+              <h4 class="kahoot-title mb-4">Participantes</h4>
+
+              <div class="d-flex flex-wrap justify-content-center gap-3">
+                {match?.players.map((player, index) => (
+                  <div class={`player-bubble player-color-4`}>
                     <i class="bi bi-person-fill me-2"></i>{player}
-                  </li>
+                  </div>
                 ))}
-              </ul>
-              <p class="mt-3 text-warning fw-semibold">La partida comenzará en breve...</p>
+              </div>
+
+              <p class="mt-4 text-warning fw-semibold">¡La partida comenzará en breve!</p>
             </div>
           </Show>
 
