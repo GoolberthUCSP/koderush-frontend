@@ -2,10 +2,14 @@
 import { For, createSignal, onMount, Show, createEffect } from 'solid-js'
 import { Toast } from './Toast';
 
+interface ToastConfig {
+  message: string;
+  type: ToastType;
+}
+
 export default function SubmissionsTab({ match }: { match: MatchState }) {
   const [showToast, setShowToast] = createSignal(false);
-  const [toastMessage, setToastMessage] = createSignal('');
-  const [toastType, setToastType] = createSignal('info');
+  const [toastConfig, setToastConfig] = createSignal<ToastConfig>({message: 'none', type: 'info'});
   const [lastSubmissionState, setLastSubmissionState] = createSignal<{
   id: number;
   veredict: string;
@@ -23,10 +27,12 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
   if (submissions.length > 0) {
     const latest = submissions[0];
     const lastState = lastSubmissionState();
+    console.log(latest.veredict)
     
     if ((latest.timestamp !== lastState.id || 
         latest.veredict !== lastState.veredict)) {
-      if (!initialToast)
+      console.log('diff: ', latest.veredict, " ", lastState.veredict)
+      if (!initialToast && latest.veredict !== "waiting")
       {
         showVerdictNotification(latest.veredict);
         setLastSubmissionState({ id: latest.timestamp, veredict: latest.veredict });
@@ -42,36 +48,42 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
   }
 
   const showVerdictNotification = (veredict: string) => {
-    const messages: Record<string, string> = {
-      'accepted': '¡Solución aceptada! ¡Buen trabajo!',
-      'wrong answer': 'Respuesta incorrecta. Revisa tu solución.',
-      'compilation error': 'Error de compilación. Verifica tu código.',
-      'runtime error': 'Error durante la ejecución. Revisa tu código.',
-      'time limit exceeded': 'Tiempo límite excedido. Optimiza tu solución.',
-      'memory limit exceeded': 'Límite de memoria excedido. Optimiza tu solución.',
-      'waiting': 'Tu envío está siendo evaluado...'
+    const messages: Record<string, ToastConfig> = {
+      'accepted': {
+        message: '¡Solución aceptada! ¡Buen trabajo!',
+        type: 'success' as const,
+        // You could add more customizations here
+      },
+      'wrong answer': {
+        message: 'Respuesta incorrecta. ¡Sigue intentando!',
+        type: 'danger' as const,
+      },
+      // ... other verdicts
     };
 
-    setToastMessage(messages[veredict] || 'Envío procesado');
-    setToastType(veredictColor(veredict));
+    const config = messages[veredict] || { 
+      message: 'Envío procesado', 
+      type: 'info' as const 
+    };
+    setToastConfig(config);
     setShowToast(true);
     
     // Auto-hide after 5 seconds
-    setTimeout(() => setShowToast(false), 5000);
+    //setTimeout(() => setShowToast(false), 5000);
   };
 
   const problemIds = Object.keys(match.problems)
 
   return (
-    
-    <div class="table-responsive">
+    <div>
       <Show when={showToast()}>
         <Toast 
-          message={toastMessage()} 
-          type={toastType()} 
+          message={toastConfig().message} 
+          type={toastConfig().type} 
           onClose={() => setShowToast(false)} 
         />
       </Show>
+      <div class="table-responsive">
       <table class="table table-bordered table-sm table-hover align-middle">
         <thead class="table-light">
           <tr>
@@ -98,6 +110,7 @@ export default function SubmissionsTab({ match }: { match: MatchState }) {
           </For>
         </tbody>
       </table>
+    </div>
     </div>
   )
 }

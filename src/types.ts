@@ -34,3 +34,5 @@ type MatchState = {
   seconds_per_problem: number | null,
   seconds_per_tutorial: number | null,
 }
+
+type ToastType = 'success' | 'danger' | 'warning' | 'info';

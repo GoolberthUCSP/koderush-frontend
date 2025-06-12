@@ -178,6 +178,43 @@
         box-shadow: 0 0 0 0.2rem rgba(122, 89, 238, 0.25); /* Subtle glow */
       }
 
+      /* For Toast Notifications */
+
+      .toast-notif {
+        border-radius: 0.5rem;
+        width: fit-content;
+        height: fit-content;
+        margin: auto;
+      }
+
+      @keyframes toast-progress {
+        from { width: 100% }
+        to { width: 0% }
+      }
+
+      .animate-toast-progress {
+        animation: toast-progress linear forwards;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+      }
+
+      .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .animate-bounce {
+        animation: bounce 0.5s ease infinite;
+      }
+
       /* Scrollbar styling */
       ::-webkit-scrollbar {
         width: 8px;
