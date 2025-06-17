@@ -22,7 +22,7 @@ export default function CodeEditor({ submitCode, problemId }: {
         value={language()}
         onInput={(e) => setLanguage(e.target.value)}
       >
-        <option value="cpp">C++</option>
+        <option value="c++">C++</option>
         <option value="python">Python</option>
         <option value="javascript">JavaScript</option>
       </select>
