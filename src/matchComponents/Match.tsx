@@ -1,10 +1,9 @@
 import { onCleanup, onMount, createSignal, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
 import { io, Socket } from 'socket.io-client'
-import Header from "./Header";
-import Footer from "./Footer";
 import Game from "./Game";
 import WaitingHub from "./WaitingHub";
+import FinalResults from "./FinalResults";
 import { useNavigate, useSearchParams } from "@solidjs/router";
 
 let socket: Socket
@@ -15,6 +14,7 @@ export default function Match() {
     const player = params.name as string;
     const match_id = params.code as string;
     const [now, setNow] = createSignal(Math.floor(Date.now() / 1000));
+    const [matchEnded, setMatchEnded] = createSignal(false)
     let clockInterval: ReturnType<typeof setInterval> | null = null;
 
     const [match, setMatch] = createStore<MatchState>({
@@ -72,6 +72,7 @@ export default function Match() {
             console.log('New tutorial');
         })
         socket.on('match_ended', () => {
+            setMatchEnded(true);
             console.log('Match ended');
         })
     })
@@ -115,10 +116,14 @@ export default function Match() {
         if (!match.start_timestamp || now() < match.start_timestamp) {
             return <WaitingHub match={match} />
         } else {
-            return <Game match={match} submitCode={submitCode}/>
+            if (matchEnded()){
+                return <FinalResults match={match}></FinalResults>
+            }
+            else {
+                return <Game match={match} submitCode={submitCode}/>
+            }
         }
     }
-
 
     return (
         <>
