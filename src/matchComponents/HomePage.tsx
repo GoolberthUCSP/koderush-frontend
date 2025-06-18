@@ -13,7 +13,7 @@ function MainContent() {
         navigate(`/match?name=${encodeURIComponent(name())}&code=${encodeURIComponent(code())}`);
     };
     return (
-        <div class="kahoot-container justify-content-center my-auto row">
+        <div class="kahoot-container justify-content-center m-auto row w-50">
             <div class="col-lg-8 text-center d-flex flex-column align-items-center">
                 <h1 class="kahoot-title display-2 fw-bold mb-4">
                     <span class="text-brand">Koderush</span>!

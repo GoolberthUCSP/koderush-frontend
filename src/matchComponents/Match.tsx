@@ -14,8 +14,11 @@ export default function Match() {
     const player = params.name as string;
     const match_id = params.code as string;
     const [now, setNow] = createSignal(Math.floor(Date.now() / 1000));
-    const [matchEnded, setMatchEnded] = createSignal(false)
+    const initialMatchEnded = localStorage.getItem('matchEnded') === 'true';
+    const [matchEnded, setMatchEnded] = createSignal(initialMatchEnded);
+
     let clockInterval: ReturnType<typeof setInterval> | null = null;
+    console.log(matchEnded())
 
     const [match, setMatch] = createStore<MatchState>({
         match_id: match_id,
@@ -73,6 +76,7 @@ export default function Match() {
         })
         socket.on('match_ended', () => {
             setMatchEnded(true);
+            localStorage.setItem('matchEnded', 'true');
             console.log('Match ended');
         })
     })
