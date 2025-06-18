@@ -56,7 +56,7 @@ export default function Match() {
         })
         socket.on('state_update', (state) => {
             setMatch(() => state)
-            console.log('Update state');
+            console.log('Update state', state);
         })
         socket.on('new_submission', (submission) => {
             if (submission.player == match.player) {

@@ -1,11 +1,11 @@
 // ScoreboardTab.tsx
-import { For } from 'solid-js'
+import { For, createMemo } from 'solid-js'
 
 export default function ScoreboardTab({ match }: { match: MatchState }) {
-  const problemIds = Object.keys(match.problems)
+  const problemIds = createMemo(() => Object.keys(match.problems))
   
   // Obtener lista ordenada de problemas
-  const calculateScores = () => {
+  const calculateScores = createMemo(() => {
     const scores: Map<string, any> = new Map();
 
     for (const player of match.players) {
@@ -14,7 +14,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
         lastAcceptedTime: 0,
         problems: {}, // problem_id -> { solved: bool, failedAttempts: number }
       })
-      for (const pid of problemIds) {
+      for (const pid of problemIds()) {
         scores.get(player).problems[pid] = {
           solved: false,
           tried: false,
@@ -28,7 +28,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
         .filter((s) => s.player === player && s.veredict !== 'waiting')
         .sort((a, b) => a.timestamp - b.timestamp)
 
-      for (const pid of problemIds) {
+      for (const pid of problemIds()) {
         const problemSubs = playerSubs.filter((s) => s.problem_id === pid)
         
         if (problemSubs.length > 0) {
@@ -60,7 +60,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
         ? scoreB.solved - scoreA.solved
         : a.localeCompare(b)
     )
-  }
+  });
 
   const scoreboard = calculateScores()
   console.log(scoreboard)
@@ -73,7 +73,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
             <th>#</th>
             <th>Jugador</th>
             <th>Resueltos</th>
-            {problemIds.map((pid, idx) => (
+            {problemIds().map((pid, idx) => (
               <th>{`${String.fromCharCode(65 + idx)}`}</th>
             ))}
           </tr>
@@ -85,7 +85,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
                 <td>{i() + 1}</td>
                 <td class="text-start">{player}</td>
                 <td>{score.solved}</td>
-                {problemIds.map((pid) => {
+                {problemIds().map((pid) => {
                   const { solved, tried, failedAttempts } = score.problems[pid]
                   if (!tried) {
                     return <td></td>
