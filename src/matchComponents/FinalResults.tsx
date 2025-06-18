@@ -106,6 +106,9 @@ export default function FinalResults({ match }: { match: MatchState }) {
                     </tbody>
                 </table>
                 </div>
+                <h4 class='m-auto p-2 text-center link-holder'>
+                  <a class='survey-link' href='https://forms.gle/3omLN4vGZc8Y4ajp7' target='_blank'>Encuesta de satisfacción</a>
+                </h4>
             </div>
         </div>
     </div>

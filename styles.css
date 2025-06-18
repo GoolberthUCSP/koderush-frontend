@@ -463,3 +463,28 @@ body {
 }
 /* Add more as needed, depending on possible verdicts */
 
+.link-holder {
+    transition: all 0.3s ease;
+}
+
+.link-holder:hover {
+    transform: scale(1.05);
+}
+
+.survey-link {
+    text-align: center;
+    color: #7A59EE !important; 
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 20px;
+    width: fit-content;
+    border: 2px solid #7A59EE;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.survey-link:hover {
+    background-color: #7A59EE;
+    color: white !important;
+}
