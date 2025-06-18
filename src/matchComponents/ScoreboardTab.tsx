@@ -2,10 +2,10 @@
 import { For, createMemo } from 'solid-js'
 
 export default function ScoreboardTab({ match }: { match: MatchState }) {
-  const problemIds = createMemo(() => Object.keys(match.problems))
+  const problemIds = () => Object.keys(match.problems)
   
   // Obtener lista ordenada de problemas
-  const calculateScores = createMemo(() => {
+  const scores = () => {
     const scores: Map<string, any> = new Map();
 
     for (const player of match.players) {
@@ -60,10 +60,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
         ? scoreB.solved - scoreA.solved
         : a.localeCompare(b)
     )
-  });
-
-  const scoreboard = calculateScores()
-  console.log(scoreboard)
+  };
 
   return (
     <div class="table-responsive">
@@ -79,7 +76,7 @@ export default function ScoreboardTab({ match }: { match: MatchState }) {
           </tr>
         </thead>
         <tbody>
-          <For each={scoreboard}>
+          <For each={scores()}>
             {([player, score], i) => (
               <tr>
                 <td>{i() + 1}</td>

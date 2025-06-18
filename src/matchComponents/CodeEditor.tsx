@@ -14,14 +14,14 @@ export default function CodeEditor({ submitCode, problemId }: {
   }
 
   return (
-    <div>
+    <form>
       <label for="languageSelect" class="form-label">Lenguaje:</label>
       <select
         id="languageSelect"
         class="form-select mb-2"
         value={language()}
         onInput={(e) => setLanguage(e.target.value)}
-      >
+        required>
         <option value="c++">C++</option>
         <option value="python">Python</option>
         <option value="javascript">JavaScript</option>
@@ -36,11 +36,12 @@ export default function CodeEditor({ submitCode, problemId }: {
         
         onInput={(e) => setCode(e.target.value)}
         placeholder="Escribe o pega tu código aquí..."
+        required
       ></textarea>
 
       <button class="btn-normal mt-2" onClick={handleSubmit}>
         Enviar
       </button>
-    </div>
+    </form>
   )
 }
