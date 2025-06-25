@@ -9,6 +9,20 @@ interface TestCase {
     is_public: number;
 }
 
+function generateRandomString() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 let socket: WebSocket;
 
 export default function CreateProblem() {
@@ -79,14 +93,13 @@ export default function CreateProblem() {
             return;
         }
 
-        const problemId = `prob-${Date.now()}`;
+        const problemId = generateRandomString();
         const problemData: Object = {
             problem_id: problemId,
             title: title(),
             memory_limit: memoryLimit(),
             time_limit: timeInSeconds(),
             statement: statement(),
-            testCases: testCases(),
             input_description: inputDescription(),
             output_description: outputDescription(),
             tutorial: 'Tu puedes!'
@@ -97,25 +110,26 @@ export default function CreateProblem() {
             action: "insertData",
             data: problemData
         };
-        console.log(payload);
 
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify(payload));
+            console.log("Problema enviado vía WebSocket:", payload);
+            await sleep(1000)
             for (let testCase of testCases()) {
                 const testCasePayload = {
-                    action: "insertData",
                     type: "problem_examples",
-                    case: {
+                    action: "insertData",
+                    data: {
+                        problem_id: problemId,
                         input: testCase.input,
                         output: testCase.output,
                         explanation: testCase.explanation,
                         is_public: testCase.is_public
                     }
                 };
-                console.log(testCasePayload);
                 socket.send(JSON.stringify(testCasePayload));
+                console.log("Ejemplo de problema enviado vía WebSocket:", testCasePayload);
             }
-            console.log("Problema enviado vía WebSocket:", payload);
         } else {
             setSubmitStatus({ type: 'error', message: 'WebSocket no está conectado. Intenta recargar la página.' });
             setIsSubmitting(false);
