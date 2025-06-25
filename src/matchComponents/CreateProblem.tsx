@@ -61,7 +61,7 @@ export default function CreateProblem() {
         setTestCases(prev => {
             console.log(value);
             const newTestCases = [...prev];
-            newTestCases[index] = { ...newTestCases[index], [field]: field !== 'is_public' ? field : Number(value === 'true')};
+            newTestCases[index] = { ...newTestCases[index], [field]: field !== 'is_public' ? value : Number(value === 'true')};
             return newTestCases;
         });
     };
@@ -203,19 +203,19 @@ export default function CreateProblem() {
             <div class="row g-3">
             <div class="col-md-4">
             <label class="form-label">Entrada</label>
-            <textarea class="form-control font-monospace" rows={4} value={testCase.input} onInput={e => handleTestCaseChange(index(), 'input', e.currentTarget.value)} required></textarea>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.input} onChange={e => handleTestCaseChange(index(), 'input', e.currentTarget.value)} required></textarea>
             </div>
             <div class="col-md-4">
             <label class="form-label">Salida</label>
-            <textarea class="form-control font-monospace" rows={4} value={testCase.output} onInput={e => handleTestCaseChange(index(), 'output', e.currentTarget.value)} required></textarea>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.output} onChange={e => handleTestCaseChange(index(), 'output', e.currentTarget.value)} required></textarea>
             </div>
             <div class="col-md-4">
             <label class="form-label">Explicación</label>
-            <textarea class="form-control font-monospace" rows={4} value={testCase.explanation} onInput={e => handleTestCaseChange(index(), 'explanation', e.currentTarget.value)} required></textarea>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.explanation} onChange={e => handleTestCaseChange(index(), 'explanation', e.currentTarget.value)}></textarea>
             </div>
             </div>
             <div class="form-check mt-3">
-                <input id="is_public" type="checkbox" class="form-check-input" checked={testCase.is_public !== 0} onInput={e => handleTestCaseChange(index(), 'is_public', String(e.currentTarget.checked))} required />
+                <input id="is_public" type="checkbox" class="form-check-input" checked={testCase.is_public !== 0} onChange={e => handleTestCaseChange(index(), 'is_public', String(e.currentTarget.checked))} />
                 <label class="form-check-label" for="is_public">Mostrar como ejemplo</label>
             </div>
             </div>
