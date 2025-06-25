@@ -5,29 +5,22 @@ import { Tooltip } from 'bootstrap';
 interface TestCase {
     input: string;
     output: string;
-}
-
-interface ProblemData {
-    title: string;
-    description: string;
-    timeLimit: number;
-    memoryLimit: number;
-    difficulty: 'Fácil' | 'Medio' | 'Difícil';
-    testCases: TestCase[];
+    explanation: string;
+    is_public: number;
 }
 
 let socket: WebSocket;
 
 export default function CreateProblem() {
     const [title, setTitle] = createSignal('');
-    const [description, setDescription] = createSignal('');
-    const [timeInMinutes, setTimeInMinutes] = createSignal(1);
+    const [statement, setStatement] = createSignal('');
+    const [timeInSeconds, setTimeInSeconds] = createSignal(1);
     const [memoryLimit, setMemoryLimit] = createSignal(256);
-    const [difficulty, setDifficulty] = createSignal<'Fácil' | 'Medio' | 'Difícil'>('Fácil');
-    const [testCases, setTestCases] = createSignal<TestCase[]>([{ input: '', output: '' }]);
+    const [inputDescription, setInputDescription] = createSignal('');
+    const [outputDescription, setOutputDescription] = createSignal('');
+    const [testCases, setTestCases] = createSignal<TestCase[]>([{ input: '', output: '', explanation: '', is_public: 0 }]);
     const [isSubmitting, setIsSubmitting] = createSignal(false);
     const [submitStatus, setSubmitStatus] = createSignal<{ type: 'success' | 'error'; message: string } | null>(null);
-    const [matchId, setMatchId] = createSignal('');
 
     onMount(() => {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -50,26 +43,25 @@ export default function CreateProblem() {
 
     const resetForm = () => {
         setTitle('');
-        setDescription('');
-        setTimeInMinutes(1);
+        setStatement('');
+        setTimeInSeconds(1);
         setMemoryLimit(256);
-        setDifficulty('Fácil');
-        setTestCases([{ input: '', output: '' }]);
-        setMatchId('');
+        setTestCases([{ input: '', output: '', explanation: '', is_public: 0 }]);
     };
 
     const handleAddTestCase = () => {
-        setTestCases(prev => [...prev, { input: '', output: '' }]);
+        setTestCases(prev => [...prev, { input: '', output: '', explanation: '', is_public: 0 }]);
     };
 
     const handleRemoveTestCase = (indexToRemove: number) => {
         setTestCases(prev => prev.filter((_, i) => i !== indexToRemove));
     };
 
-    const handleTestCaseChange = (index: number, field: 'input' | 'output', value: string) => {
+    const handleTestCaseChange = (index: number, field: 'input' | 'output' | 'explanation' | 'is_public', value: string) => {
         setTestCases(prev => {
+            console.log(value);
             const newTestCases = [...prev];
-            newTestCases[index] = { ...newTestCases[index], [field]: value };
+            newTestCases[index] = { ...newTestCases[index], [field]: field !== 'is_public' ? field : Number(value === 'true')};
             return newTestCases;
         });
     };
@@ -81,33 +73,46 @@ export default function CreateProblem() {
         setSubmitStatus(null);
         setIsSubmitting(true);
 
-        if (!title() || !description() || !matchId() || testCases().some(tc => !tc.input || !tc.output)) {
+        if (!title() || !statement() || !inputDescription() || !outputDescription() || testCases().some(tc => !tc.input || !tc.output)) {
             setSubmitStatus({ type: 'error', message: 'Completa todos los campos requeridos, incluyendo el Match ID y los casos de prueba.' });
             setIsSubmitting(false);
             return;
         }
 
         const problemId = `prob-${Date.now()}`;
-        const problemData: ProblemData = {
+        const problemData: Object = {
+            problem_id: problemId,
             title: title(),
-            description: description(),
-            timeLimit: timeInMinutes() * 60,
-            memoryLimit: memoryLimit(),
-            difficulty: difficulty(),
+            memory_limit: memoryLimit(),
+            time_limit: timeInSeconds(),
+            statement: statement(),
             testCases: testCases(),
+            input_description: inputDescription(),
+            output_description: outputDescription(),
+            tutorial: 'Tu puedes!'
         };
 
         const payload = {
             type: "problem",
-            match: matchId(),
-            data: {
-                problemId,
-                ...problemData
-            }
+            action: "insertData",
+            data: problemData
         };
 
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify(payload));
+            for (let testCase of testCases()) {
+                const testCasePayload = {
+                    action: "insertData",
+                    type: "problem_examples",
+                    case: {
+                        input: testCase.input,
+                        output: testCase.output,
+                        explanation: testCase.explanation,
+                        is_public: testCase.is_public
+                    }
+                }
+                socket.send(JSON.stringify(testCase));
+            }
             console.log("Problema enviado vía WebSocket:", payload);
         } else {
             setSubmitStatus({ type: 'error', message: 'WebSocket no está conectado. Intenta recargar la página.' });
@@ -115,7 +120,6 @@ export default function CreateProblem() {
             return;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
         setSubmitStatus({ type: 'success', message: '¡Problema creado con éxito!' });
         resetForm();
         setIsSubmitting(false);
@@ -140,55 +144,41 @@ export default function CreateProblem() {
         </Show>
 
         <div class="mb-4">
-        <label for="matchId" class="form-label fw-semibold">ID del Match</label>
-        <input
-        type="text"
-        class="form-control"
-        id="matchId"
-        value={matchId()}
-        onInput={(e) => setMatchId(e.currentTarget.value)}
-        placeholder="match123"
-        required
-        />
-        </div>
-
-        <div class="mb-4">
         <label for="problemTitle" class="form-label fw-semibold">Título del Problema</label>
         <input type="text" class="form-control form-control-lg" id="problemTitle" value={title()} onInput={e => setTitle(e.currentTarget.value)} required />
         </div>
 
-        <div class="mb-4">
-        <label for="problemDescription" class="form-label fw-semibold">Descripción (Enunciado)</label>
-        <p class="form-text text-muted mt-0">Puedes usar Markdown para el formato.</p>
-        <textarea class="form-control" id="problemDescription" rows={10} value={description()} onInput={e => setDescription(e.currentTarget.value)} required></textarea>
-        </div>
-
         <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-6">
         <label for="timeLimit" class="form-label fw-semibold">Límite de Tiempo</label>
         <div class="input-group">
-        <input type="number" class="form-control" id="timeLimit" value={timeInMinutes()} onInput={e => setTimeInMinutes(parseFloat(e.currentTarget.value))} min="1" step="1" />
-        <span class="input-group-text">min</span>
+        <input type="number" class="form-control" id="timeLimit" value={timeInSeconds()} onInput={e => setTimeInSeconds(parseFloat(e.currentTarget.value))} min="1" step="1" />
+        <span class="input-group-text">Segundos</span>
         </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
         <label for="memoryLimit" class="form-label fw-semibold">Límite de Memoria</label>
         <div class="input-group">
         <input type="number" class="form-control" id="memoryLimit" value={memoryLimit()} onInput={e => setMemoryLimit(parseInt(e.currentTarget.value, 10))} min="16" />
         <span class="input-group-text">MB</span>
         </div>
         </div>
-        <div class="col-md-4">
-        <label for="difficulty" class="form-label fw-semibold">Dificultad</label>
-        <select class="form-select" id="difficulty" value={difficulty()} onChange={e => setDifficulty(e.currentTarget.value as any)}>
-        <option value="Fácil">Fácil</option>
-        <option value="Medio">Medio</option>
-        <option value="Difícil">Difícil</option>
-        </select>
-        </div>
         </div>
 
-        <hr class="my-5" />
+        <div class="mb-4">
+        <label for="problemDescription" class="form-label fw-semibold">Enunciado</label>
+        <textarea class="form-control" id="problemDescription" rows={6} value={statement()} onInput={e => setStatement(e.currentTarget.value)} required></textarea>
+        </div>
+
+        <div class="mb-4">
+        <label for="inputDescription" class="form-label fw-semibold">Descripción de la entrada</label>
+        <textarea class="form-control" id="inputDescription" rows={3} value={inputDescription()} onInput={e => setInputDescription(e.currentTarget.value)} required></textarea>
+        </div>
+
+        <div class="mb-5">
+        <label for="outputDescription" class="form-label fw-semibold">Descripcion de la salida</label>
+        <textarea class="form-control" id="outputDescription" rows={3} value={outputDescription()} onInput={e => setOutputDescription(e.currentTarget.value)} required></textarea>
+        </div>
 
         <h4 class="mb-3 fw-bold"><i class="bi bi-braces-asterisk me-2"></i>Casos de Prueba</h4>
         <For each={testCases()}>
@@ -197,28 +187,36 @@ export default function CreateProblem() {
             <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
             <span class="fw-bold text-muted">Caso de Prueba #{index() + 1}</span>
             <Show when={testCases().length > 1}>
-            <button
-            type="button"
-            class="btn btn-sm btn-outline-danger border-0"
-            onClick={() => handleRemoveTestCase(index())}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Eliminar este caso de prueba"
-            >
-            <i class="bi bi-trash3 fs-5"></i>
-            </button>
+                <button
+                type="button"
+                class="btn btn-sm btn-outline-danger border-0"
+                onClick={() => handleRemoveTestCase(index())}
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Eliminar este caso de prueba"
+                >
+                <i class="bi bi-trash3 fs-5"></i>
+                </button>
             </Show>
             </div>
             <div class="card-body">
             <div class="row g-3">
-            <div class="col-md-6">
-            <label class="form-label">Entrada (Input)</label>
-            <textarea class="form-control font-monospace" rows={5} value={testCase.input} onInput={e => handleTestCaseChange(index(), 'input', e.currentTarget.value)} required></textarea>
+            <div class="col-md-4">
+            <label class="form-label">Entrada</label>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.input} onInput={e => handleTestCaseChange(index(), 'input', e.currentTarget.value)} required></textarea>
             </div>
-            <div class="col-md-6">
-            <label class="form-label">Salida Esperada (Output)</label>
-            <textarea class="form-control font-monospace" rows={5} value={testCase.output} onInput={e => handleTestCaseChange(index(), 'output', e.currentTarget.value)} required></textarea>
+            <div class="col-md-4">
+            <label class="form-label">Salida</label>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.output} onInput={e => handleTestCaseChange(index(), 'output', e.currentTarget.value)} required></textarea>
             </div>
+            <div class="col-md-4">
+            <label class="form-label">Explicación</label>
+            <textarea class="form-control font-monospace" rows={4} value={testCase.explanation} onInput={e => handleTestCaseChange(index(), 'explanation', e.currentTarget.value)} required></textarea>
+            </div>
+            </div>
+            <div class="form-check mt-3">
+                <input id="is_public" type="checkbox" class="form-check-input" checked={testCase.is_public !== 0} onInput={e => handleTestCaseChange(index(), 'is_public', String(e.currentTarget.checked))} required />
+                <label class="form-check-label" for="is_public">Mostrar como ejemplo</label>
             </div>
             </div>
             </div>
@@ -229,10 +227,8 @@ export default function CreateProblem() {
         <i class="bi bi-plus-lg me-2"></i>Añadir Caso de Prueba
         </button>
 
-        <hr class="my-5" />
-
         <div class="d-grid">
-        <button type="submit" class="btn btn-primary btn-lg" disabled={isSubmitting()}>
+        <button type="submit" class="btn btn-primary btn-lg mt-5" disabled={isSubmitting()}>
         <Show when={!isSubmitting()} fallback={
             <>
             <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
