@@ -93,10 +93,11 @@ export default function CreateProblem() {
         };
 
         const payload = {
-            type: "problem",
+            type: "problems",
             action: "insertData",
             data: problemData
         };
+        console.log(payload);
 
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify(payload));
@@ -110,8 +111,9 @@ export default function CreateProblem() {
                         explanation: testCase.explanation,
                         is_public: testCase.is_public
                     }
-                }
-                socket.send(JSON.stringify(testCase));
+                };
+                console.log(testCasePayload);
+                socket.send(JSON.stringify(testCasePayload));
             }
             console.log("Problema enviado vía WebSocket:", payload);
         } else {
