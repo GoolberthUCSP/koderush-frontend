@@ -1,5 +1,7 @@
 import HomePage from "./matchComponents/HomePage"
 import Match from "./matchComponents/Match"
+import CreateProblem from "./matchComponents/CreateProblem"
+
 import { Router, Route, HashRouter } from '@solidjs/router'
 import { render } from 'solid-js/web';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,6 +12,7 @@ function App() {
     <HashRouter>
       <Route path="/" component={HomePage} />
       <Route path="/match" component={Match} />
+      <Route path="/createproblem" component={CreateProblem} />
     </HashRouter>
   )
 }

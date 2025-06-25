@@ -39,7 +39,7 @@ export default function CodeEditor({ submitCode, problemId }: {
         required
       ></textarea>
 
-      <button class="btn-normal mt-2" onClick={handleSubmit}>
+      <button class="btn-normal mt-2" onClick={handleSubmit} type="button">
         Enviar
       </button>
     </form>
